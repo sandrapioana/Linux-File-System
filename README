@@ -1,0 +1,102 @@
+#Pirvanescu Sandra-Ioana 321CA
+
+#touch
+Pentru functia "touch", am declarat noul fisier. Memoria am alocat-o de abia
+dupa ce am facut verificarea ca nu exista deja un fisier sau director cu
+acelasi nume. Daca aceasta conditie nu a fost indeplinita, atunci am afisat
+mesajul "File already exists\n". Daca a fost indeplinita, am verificat daca
+lista de fisiere este goala sau nu. In caz ca aceasta este goala, am adaugat
+fisierul nou la inceputul listei de fisiere-copii (head_children_files sa pointeze
+la noul fisier). Daca mai existau fisiere in lista, am adaugat fisierul la
+finalul listei de fisiere-copii.
+
+#mkdir
+Pentru functia "mkdir" am procedat similar cu functia "touch".
+Am declarat noul director. Memoria am alocat-o de abia dupa ce am facut 
+verificarea ca nu exista deja un fisier sau director cu acelasi nume. Daca
+aceasta conditie nu a fost indeplinita, atunci am afisat mesajul 
+"Directory already exists\n". Daca a fost indeplinita, am verificat daca
+lista de directoare este goala sau nu. In caz ca aceasta este goala, am adaugat
+directorul nou la inceputul listei de directoare-copii (head_children_dirs sa pointeze
+la noul director). Daca mai existau directoare in lista, am adaugat directorul la
+finalul listei de directoare-copii.
+
+#ls
+Pentru functia "ls", am afisat mai intai toate numele de directoare-copii, in
+ordinea in care acestea s-au creat, apoi am afisat toate numele de fisiere-copii,
+in ordinea in care acestea s-au creat. Daca lista de directoare si/sau lista
+de fisiere era goala, nu se afisa nimic pentru respectiva verificare.
+
+#rm
+Pentru functia "rm", am declarat un fisier auxiliar care initial pointeaza catre
+"NULL", iar in momentul in care gaseste fisierul care trebuie eliminat, va 
+pointa catre acesta. In momentul in care gasesc fisierul cautat, elimin fisierul
+respectiv din lista de fisiere. Caut prin intreaga lista de fisiere-copii.
+Daca, dupa ce am iterat prin toata aceasta lista, fisierul auxiliar pointeaza in
+continuare catre "NULL", atunci inseamna ca nu exista fisierul pe care il cautam
+in acea lista. Daca fisierul auxiliar nu pointeaza catre "NULL", eliberam memoria
+la care acesta pointeaza.
+
+#rmdir
+Pentru functia "rmdir", am declarat un director auxiliar care initial pointeaza
+catre "NULL", iar in momentul in care gaseste directorul care trebuie eliminat, va
+pointa catre acesta. In momentul in care gasesc directorul cautat, elimin directorul
+respectiv din lista de directoare. Caut prin intreaga lista de directoare-copii.
+Daca, dupa ce am iterat prin toata aceasta lista, directorul auxiliar pointeaza in
+continuare catre "NULL", atunci inseamna ca nu exista directorul pe care il cautam
+in acea lista. Daca directorul auxiliar nu pointeaza catre "NULL", apelam o 
+functie ajutatoare care elibereaza recursiv un director si tot ce se afla in el.
+Functia "free_director" trece prin toate directoarele din directorul dat ca 
+parametru, eliberand memoria ocupata de acestia, apoi, cand nu mai exista
+directoare in cel dat ca parametru, trece la eliberarea memoriei fisierelor
+acestuia. 
+
+#cd
+Pentru functia "cd" am verificat, in primul rand, daca ma aflu in directorul
+"home". In acest caz, nu voi schimba directorul curent. Daca input-ul este
+"cd ..", ma voi muta in directorul parinte al directorului curent. Daca input-ul
+este format din comanda "cd" si numele directorului, atunci ma voi muta in
+directorul numit ca cel de-al doilea parametru al functiei daca acesta exista
+in copii directorului curent. Daca nu exista, voi afisa mesajul "No directories
+found!".
+
+#pwd
+Pentru functia "pwd", am verificat daca ma aflu in "home". Daca sunt in "home",
+atunci printez doar "/home". Daca ma aflu in alt diector, concatenez numele
+directorului curent la un string care contine calea pana la acel director. 
+Ma opresc cand ajung in "home".
+
+#tree
+Functia "tree" am apelat-o recursiv si am modificat parametrul level de fiecare 
+data cand am mers mai jos in ierarhia sistemului de fisiere. Am mers mai jos in
+ierarhie pana cand nu am maiavut directoare, afisand apoi fisierele din acesta.
+
+#stop
+In functia "stop" am apelat functia "free_director" pentru directorul home.
+
+#mv
+In functia "mv", am verificat daca exista deja un fisier sau un director cu 
+numele nou pe care vreau sa il pun. Daca acesta exista, voi afisa mesajul 
+"File/Director already exists". Daca mu gasesc fisierul/directorul caruia
+vreau sa ii schimb numele, atunci printez "File/Director not found".
+Daca gasesc fisierul/directorul in lista acestora, atunci il elimin din lista 
+si il retin intr-un auxiliar.
+Daca fisierul/directorul gasit este singurul din lista de fisiere-copii/
+directoare-copii, atunci ii schimb doar numele si refac legaturile dintre fisierul
+redenumit si head_children_files/head_children_files.
+Daca acesta se afla in alt loc fata de inceputul liste si mai exista alte
+fisiere/directoare, il voi plasa la finalul listei, cu noua denumire.
+
+#main
+In functia "main" am folosit un auxiliar pe care l-am initializat cu 0 si care,
+in momentul apelarii functiei "stop", acesta ia valoarea 1 si va iesi din 
+"do...while".
+Am initializat directorul "home" in care se va afla sistemul de fisiere si am
+folosit un pointer care va pointa mereu catre directorul "home" pentru a-l 
+putea da ca parametru in momentul apelarii functiei "stop". Am alocat dinamic 
+"input"(comanda) si  "name"(numele fisierului/directorului pe care vrem sa il
+cream, stergem, etc.) si apoi am comparat input-ul dat cu ce functie trebuie
+apelata. La terminarea comparatiei, am eliberat memoria alocata pentru "input" si
+"name". Pentru cazul in care comanda este "pwd", n-am alocat dinamic "name2" 
+deoarece il aloc in functia "pwd". Pentru comanda "mv", "name2" reprezinta 
+numele nou al fisierului/directorului.
